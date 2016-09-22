@@ -126,6 +126,33 @@ int pwm_set_frequency(const char *key, float freq) {
     return 1;
 }
 
+int pwm_set_period_ns(const char *key, unsigned long period_ns) {
+    int len;
+    char buffer[80];
+    unsigned long period_ns;
+    struct pwm_exp *pwm;
+
+    if (freq <= 0.0)
+        return -1;
+
+    pwm = lookup_exported_pwm(key);
+
+    if (pwm == NULL) {
+        return -1;
+    }
+
+    //period_ns = (unsigned long)(1e9 / freq);
+
+    if (period_ns != pwm->period_ns) {
+        pwm->period_ns = period_ns;
+
+        len = snprintf(buffer, sizeof(buffer), "%lu", period_ns); BUF2SMALL(buffer);
+        ssize_t s = write(pwm->period_fd, buffer, len);  ASSRT(s == len);
+    }
+
+    return 1;
+}
+
 int pwm_set_polarity(const char *key, int polarity) {
     int len;
     char buffer[80];
@@ -168,6 +195,28 @@ int pwm_set_duty_cycle(const char *key, float duty) {
     }
 
     pwm->duty = (unsigned long)(pwm->period_ns * (duty / 100.0));
+
+    len = snprintf(buffer, sizeof(buffer), "%lu", pwm->duty); BUF2SMALL(buffer);
+    ssize_t s = write(pwm->duty_fd, buffer, len);  ASSRT(s == len);
+
+    return 0;
+}
+
+int pwm_set_pulse_width_ns(const char *key, unsigned long pulse_width_ns) {
+    int len;
+    char buffer[80];
+    struct pwm_exp *pwm;
+
+    pwm = lookup_exported_pwm(key);
+
+    if (pwm == NULL) {
+        return -1;
+    }
+
+    if (pulse_width_ns < 0 || pulse_width_ns > pwm->period_ns)
+        return -1;
+
+    pwm->duty = pulse_width_ns //(unsigned long)(pwm->period_ns * (duty / 100.0));
 
     len = snprintf(buffer, sizeof(buffer), "%lu", pwm->duty); BUF2SMALL(buffer);
     ssize_t s = write(pwm->duty_fd, buffer, len);  ASSRT(s == len);
