@@ -7,7 +7,7 @@ NOTE: Now requires the custom DTC to install the library
 Manual::
 
 For Python2.7:
-
+```
     sudo apt-get update
     sudo apt-get install git build-essential python-dev python-pip flex bison -y
     git clone https://github.com/atenart/dtc
@@ -20,9 +20,9 @@ For Python2.7:
     sudo python setup.py install
     cd ..
     sudo rm -rf CHIP_IO
-
+```
 For Python3:
-
+```
     sudo apt-get update
     sudo apt-get install git build-essential python3-dev python3-pip flex bison -y
     git clone https://github.com/atenart/dtc
@@ -35,7 +35,7 @@ For Python3:
     sudo python3 setup.py install
     cd ..
     sudo rm -rf CHIP_IO
-
+```
 **Usage**
 
 Using the library is very similar to the excellent RPi.GPIO library used on the Raspberry Pi. Below are some examples.
