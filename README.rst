@@ -8,33 +8,37 @@ Manual::
 
 For Python2.7:
 
-    sudo apt-get update
-    sudo apt-get install git build-essential python-dev python-pip flex bison -y
-    git clone https://github.com/atenart/dtc
-    cd dtc
-    make
-    sudo  make install PREFIX=/usr
-    cd ..
-    git clone git://github.com/xtacocorex/CHIP_IO.git
-    cd CHIP_IO
-    sudo python setup.py install
-    cd ..
-    sudo rm -rf CHIP_IO
+```
+sudo apt-get update
+sudo apt-get install git build-essential python-dev python-pip flex bison -y
+git clone https://github.com/atenart/dtc
+cd dtc
+make
+sudo  make install PREFIX=/usr
+cd ..
+git clone git://github.com/xtacocorex/CHIP_IO.git
+cd CHIP_IO
+sudo python setup.py install
+cd ..
+sudo rm -rf CHIP_IO
+```
 
 For Python3:
 
-    sudo apt-get update
-    sudo apt-get install git build-essential python3-dev python3-pip flex bison -y
-    git clone https://github.com/atenart/dtc
-    cd dtc
-    make
-    sudo  make install PREFIX=/usr
-    cd ..
-    git clone git://github.com/xtacocorex/CHIP_IO.git
-    cd CHIP_IO
-    sudo python3 setup.py install
-    cd ..
-    sudo rm -rf CHIP_IO
+```
+sudo apt-get update
+sudo apt-get install git build-essential python3-dev python3-pip flex bison -y
+git clone https://github.com/atenart/dtc
+cd dtc
+make
+sudo  make install PREFIX=/usr
+cd ..
+git clone git://github.com/xtacocorex/CHIP_IO.git
+cd CHIP_IO
+sudo python3 setup.py install
+cd ..
+sudo rm -rf CHIP_IO
+```
 
 **Usage**
 
@@ -158,90 +162,111 @@ The following "table" is the allowable pin names that are able to be used by the
 
 Import the library, and setup as GPIO.OUT or GPIO.IN::
 
-    import CHIP_IO.GPIO as GPIO
-    GPIO.setup("CSID0", GPIO.OUT)
+```
+import CHIP_IO.GPIO as GPIO
+GPIO.setup("CSID0", GPIO.OUT)
+```
 
 You can also refer to the pin number::
 
-    GPIO.setup("U14_31", GPIO.OUT)
+```
+GPIO.setup("U14_31", GPIO.OUT)
+```
 
 You can also refer to the bin based upon its alternate name::
 
-    GPIO.setup("GPIO1", GPIO.IN)
+```
+GPIO.setup("GPIO1", GPIO.IN)
+```
 
 **GPIO Output**
 
 Setup the pin for output, and write GPIO.HIGH or GPIO.LOW. Or you can use 1 or 0.::
 
-    import CHIP_IO.GPIO as GPIO
-    GPIO.setup("CSID0", GPIO.OUT)
-    GPIO.output("CSID0", GPIO.HIGH)
+```
+import CHIP_IO.GPIO as GPIO
+GPIO.setup("CSID0", GPIO.OUT)
+GPIO.output("CSID0", GPIO.HIGH)
+```
 
 **GPIO Input**
 
 Inputs work similarly to outputs.::
 
-    import CHIP_IO.GPIO as GPIO
-    GPIO.setup("CSID0", GPIO.IN)
+```
+import CHIP_IO.GPIO as GPIO
+GPIO.setup("CSID0", GPIO.IN)
+```
 
 Polling inputs::
 
-    if GPIO.input("CSID0"):
-        print("HIGH")
-    else:
-        print("LOW")
+```
+if GPIO.input("CSID0"):
+    print("HIGH")
+else:
+    print("LOW")
+```
 
 Waiting for an edge (GPIO.RISING, GPIO.FALLING, or GPIO.BOTH::
 
 This only works for the AP-EINT1, AP-EINT3, and XPO Pins on the CHIP
 
-    GPIO.wait_for_edge(channel, GPIO.RISING)
+```
+GPIO.wait_for_edge(channel, GPIO.RISING)
+```
 
 Detecting events::
 
-    GPIO.setup("XIO-P0", GPIO.IN)
-    GPIO.add_event_detect("XIO-P0", GPIO.FALLING)
-    #your amazing code here
-    #detect wherever:
-    if GPIO.event_detected("XIO-P0"):
-        print "event detected!"
+```
+GPIO.setup("XIO-P0", GPIO.IN)
+GPIO.add_event_detect("XIO-P0", GPIO.FALLING)
+#your amazing code here
+#detect wherever:
+if GPIO.event_detected("XIO-P0"):
+    print "event detected!"
+```
 
 **GPIO Cleanup**
 
 To clean up the GPIO when done, do the following::
 
-    GPIO.cleanup()
-
+```
+GPIO.cleanup()
+```
 **PWM**::
 
 Hardware PWM requires a DTB Overlay loaded on the CHIP to allow the kernel to know there is a PWM device available to use.
 
-    import CHIP_IO.PWM as PWM
-    #PWM.start(channel, duty, freq=2000, polarity=0)
-    #duty values are valid 0 (off) to 100 (on)
-    PWM.start("PWM0", 50)
-    PWM.set_duty_cycle("PWM0", 25.5)
-    PWM.set_frequency("PWM0", 10)
-    # To stop PWM
-    PWM.stop("PWM0")
-    PWM.cleanup()
-    #For specific polarity: this example sets polarity to 1 on start:
-    PWM.start("PWM0", 50, 2000, 1)
+```
+import CHIP_IO.PWM as PWM
+#PWM.start(channel, duty, freq=2000, polarity=0)
+#duty values are valid 0 (off) to 100 (on)
+PWM.start("PWM0", 50)
+PWM.set_duty_cycle("PWM0", 25.5)
+PWM.set_frequency("PWM0", 10)
+# To stop PWM
+PWM.stop("PWM0")
+PWM.cleanup()
+#For specific polarity: this example sets polarity to 1 on start:
+PWM.start("PWM0", 50, 2000, 1)
+```
 
 **SOFTPWM**::
 
-    import CHIP_IO.SOFTPWM as SPWM
-    #SPWM.start(channel, duty, freq=2000, polarity=0)
-    #duty values are valid 0 (off) to 100 (on)
-    #you can choose any pin
-    SPWM.start("XIO-P7", 50)
-    SPWM.set_duty_cycle("XIO-P7", 25.5)
-    SPWM.set_frequency("XIO-P7", 10)
-    # To Stop SPWM
-    SPWM.stop("XIO-P7")
-    SPWM.cleanup()
-    #For specific polarity: this example sets polarity to 1 on start:
-    SPWM.start("XIO-P7", 50, 2000, 1)
+```
+import CHIP_IO.SOFTPWM as SPWM
+#SPWM.start(channel, duty, freq=2000, polarity=0)
+#duty values are valid 0 (off) to 100 (on)
+#you can choose any pin
+SPWM.start("XIO-P7", 50)
+SPWM.set_duty_cycle("XIO-P7", 25.5)
+SPWM.set_frequency("XIO-P7", 10)
+# To Stop SPWM
+SPWM.stop("XIO-P7")
+SPWM.cleanup()
+#For specific polarity: this example sets polarity to 1 on start:
+SPWM.start("XIO-P7", 50, 2000, 1)
+```
 
 Use SOFTPWM at low speeds (hundreds of Hz) for the best results. Do not use for anything that needs high precision or reliability.
 
@@ -262,28 +287,32 @@ PWM0, SPI2, I2C1, CUST
 
 Only one of each type of overlay can be loaded at a time, but all three options can be loaded simultaneously.  So you can have SPI2 and I2C1 without PWM0, but you cannot have SPI2 loaded twice.
 
-    import CHIP_IO.OverlayManager as OM
-    # The enable_debug() function turns on debug printing
-    #OM.enable_debug()
-    # To load an overlay, feed in the name to load()
-    OM.load("PWM0")
-    # To verify the overlay was properly loaded, the get_ functions return booleans
-    OM.get_pwm_loaded()
-    OM.get_i2c_loaded()
-    OM.get_spi_loaded()
-    # To unload an overlay, feed in the name to unload()
-    OM.unload("PWM0")
+```
+import CHIP_IO.OverlayManager as OM
+# The enable_debug() function turns on debug printing
+#OM.enable_debug()
+# To load an overlay, feed in the name to load()
+OM.load("PWM0")
+# To verify the overlay was properly loaded, the get_ functions return booleans
+OM.get_pwm_loaded()
+OM.get_i2c_loaded()
+OM.get_spi_loaded()
+# To unload an overlay, feed in the name to unload()
+OM.unload("PWM0")
+```
 
 To use a custom overlay, you must build and compile it properly per the DIP Docs: http://docs.getchip.com/dip.html#development-by-example
 There is no verification that the Custom Overlay is setup properly, it's fire and forget
 
-    import CHIP_IO.OverlayManager as OM
-    # The full path to the dtbo file needs to be specified
-    OM.load("CUST","/home/chip/projects/myfunproject/overlays/mycustomoverlay.dtbo")
-    # You can check for loading like above, but it's really just there for sameness
-    OM.get_custom_loaded()
-    # To unload, just call unload()
-    OM.unload("CUST")
+```
+import CHIP_IO.OverlayManager as OM
+# The full path to the dtbo file needs to be specified
+OM.load("CUST","/home/chip/projects/myfunproject/overlays/mycustomoverlay.dtbo")
+# You can check for loading like above, but it's really just there for sameness
+OM.get_custom_loaded()
+# To unload, just call unload()
+OM.unload("CUST")
+```
 
 **OverlayManager requires a 4.4 kernel with the CONFIG_OF_CONFIGFS option enabled in the kernel config.**
 
@@ -291,11 +320,15 @@ There is no verification that the Custom Overlay is setup properly, it's fire an
 
 Install py.test to run the tests. You'll also need the python compiler package for py.test.::
 
-    sudo apt-get install python-pytest
+```
+sudo apt-get install python-pytest
+```
 
 Execute the following in the root of the project::
 
-    sudo py.test
+```
+sudo py.test
+```
 
 **Credits**
 
